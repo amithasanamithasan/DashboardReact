@@ -15,7 +15,7 @@ const Sidebar = ({ onPageChange, activePage }) => {
 
   const menuItems = [
     { name: "Home", icon: <Home size={18} />, path: "/" },
-    { name: "Leaderboard", icon: <BarChart2 size={18} />, path: "/leaderboard" },
+    { name: "Adminstration", icon: <BarChart2 size={18} />, path: "/adminstration" },
     { name: "Reports", icon: <FileText size={18} />, path: "/reports" },
     { name: "Subscription", icon: <NotebookText size={18} />, path: "/subscription" },
   ];
@@ -33,14 +33,17 @@ const Sidebar = ({ onPageChange, activePage }) => {
 
   return (
     <div
-      className={`relative flex flex-col justify-between bg-base-200 border-r border-base-300 shadow-sm h-screen transition-all duration-300 ${
-        collapsed ? "w-20" : "w-64"
-      }`}
-    >
-      {/* Collapse Toggle Button */}
+    className={`relative flex flex-col justify-between bg-base-200 border-r border-base-300 shadow-sm min-h-screen transition-all duration-300 ${
+      collapsed ? "w-20" : "w-64"
+    } ${
+  
+      window.innerWidth < 768 ? (collapsed ? "hidden" : "w-full fixed z-50") : ""
+    }`}
+  >
+      
       <button
         onClick={() => setCollapsed(!collapsed)}
-        className="absolute -right-10 top-80 z-10 border border-base-300 rounded-full shadow-md p-2 bg-base-100 hover:bg-base-200 transition-colors"
+        className="absolute -right-10 top-100 z-10 border border-base-300 rounded-full shadow-md p-2 bg-base-100 hover:bg-base-200 transition-colors"
       >
         {collapsed ? (
           <ArrowRightToLineIcon className="text-primary w-5 h-5" />

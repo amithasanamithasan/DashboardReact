@@ -33,8 +33,8 @@ function App() {
       case "Home":
         navigate("/");
         break;
-      case "Leaderboard":
-        navigate("/leaderboard");
+      case "adminstration":
+        navigate("/adminstration");
         break;
       case "Reports":
         navigate("/reports");

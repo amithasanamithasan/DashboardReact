@@ -1,9 +1,14 @@
 import { createBrowserRouter } from "react-router-dom";
 import App from "../App";
 import Home from "../components/Home";
-import Leaderboard from "../components/Leaderboard";
+
 import Reports from "../components/Reports";
 import Subscription from "../components/Subscription";
+import Login from "../page/Login";
+import Register from "../page/Ragister";
+import Adminstration from "../components/Adminstration";
+
+
 
 export const router = createBrowserRouter([
   {
@@ -19,8 +24,8 @@ export const router = createBrowserRouter([
         element: <Home />,
       },
       {
-        path: "leaderboard",
-        element: <Leaderboard />,
+        path: "adminstration",
+        element:<Adminstration/>,
       },
       {
         path: "reports",
@@ -32,4 +37,12 @@ export const router = createBrowserRouter([
       },
     ],
   },
+  {
+    path:'/login',
+    element:<Login></Login>
+  },
+  {
+    path:'/register',
+    element:<Register></Register>
+  }
 ]); 
