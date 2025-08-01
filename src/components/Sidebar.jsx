@@ -7,6 +7,7 @@ import {
   NotebookText,
   ArrowRightToLineIcon,
   ArrowLeftToLineIcon,
+  BookOpenText,
 } from "lucide-react";
 
 const Sidebar = ({ onPageChange, activePage }) => {
@@ -15,35 +16,37 @@ const Sidebar = ({ onPageChange, activePage }) => {
 
   const menuItems = [
     { name: "Home", icon: <Home size={18} />, path: "/" },
-    { name: "Adminstration", icon: <BarChart2 size={18} />, path: "/adminstration" },
-    { name: "Reports", icon: <FileText size={18} />, path: "/reports" },
-    { name: "Subscription", icon: <NotebookText size={18} />, path: "/subscription" },
+    { name: "BookForm", icon: <BookOpenText size={18} />, path: "/bookform" },
+    { name: "BookList", icon: <FileText size={18} />, path: "/booklist" },
+    { name: "UpdateBook", icon: <NotebookText size={18} />, path: "/updatebook" }, // Base path
   ];
 
   const handleItemClick = (itemName) => {
     onPageChange(itemName);
   };
 
+  // ✅ Active route check with dynamic path support
   const isActiveRoute = (path) => {
     if (path === "/") {
       return location.pathname === "/" || location.pathname === "/home";
+    }
+    if (path === "/updatebook") {
+      return location.pathname.startsWith("/updatebook");
     }
     return location.pathname === path;
   };
 
   return (
     <div
-    className={`relative flex flex-col justify-between bg-base-200 border-r border-base-300 shadow-sm min-h-screen transition-all duration-300 ${
-      collapsed ? "w-20" : "w-64"
-    } ${
-  
-      window.innerWidth < 768 ? (collapsed ? "hidden" : "w-full fixed z-50") : ""
-    }`}
-  >
-      
+      className={`relative flex flex-col justify-between bg-base-200 border-r border-base-300 shadow-sm min-h-screen transition-all duration-300 ${
+        collapsed ? "w-20" : "w-64"
+      } ${
+        window.innerWidth < 768 ? (collapsed ? "hidden" : "w-full fixed z-50") : ""
+      }`}
+    >
       <button
         onClick={() => setCollapsed(!collapsed)}
-        className="absolute -right-10 top-100 z-10 border border-base-300 rounded-full shadow-md p-2 bg-base-100 hover:bg-base-200 transition-colors"
+        className="absolute -right-10 top-10 z-10 border border-base-300 rounded-full shadow-md p-2 bg-base-100 hover:bg-base-200 transition-colors"
       >
         {collapsed ? (
           <ArrowRightToLineIcon className="text-primary w-5 h-5" />
@@ -77,8 +80,8 @@ const Sidebar = ({ onPageChange, activePage }) => {
       <div className="flex flex-col items-center gap-4 px-4 py-4">
         {!collapsed && (
           <div className="text-center text-xs text-base-content/70">
-            <p className="font-bold text-base-content">New to Exam AI?</p>
-            <p className="text-[11px] mb-2">Learn How Exam AI Works</p>
+            <p className="font-bold text-base-content">New to Exam Book Here  ?</p>
+            <p className="text-[19px] mb-2">Many resources are available to help you get started.</p>
             <button className="bg-primary text-primary-content text-xs px-4 py-1.5 rounded-full hover:bg-primary/90 transition-colors">
               View Tutorial
             </button>
@@ -91,17 +94,7 @@ const Sidebar = ({ onPageChange, activePage }) => {
             collapsed && "justify-center"
           }`}
         >
-          <img
-            src="https://i.pravatar.cc/30"
-            alt="User"
-            className="w-7 h-7 rounded-full"
-          />
-          {!collapsed && (
-            <>
-              <span className="text-sm font-medium text-base-content">James Smith</span>
-              <ArrowRightToLineIcon size={20} className="text-base-content/60" />
-            </>
-          )}
+         
         </div>
       </div>
     </div>

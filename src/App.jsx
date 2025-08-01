@@ -1,17 +1,16 @@
-import { useEffect, useState } from 'react'
-import { Outlet, useLocation, useNavigate } from 'react-router-dom'
-import TopBar from './components/TopBar'
-import Sidebar from './components/Sidebar'
-import { ThemeProvider } from './contexts/ThemeContext'
-
-import './App.css'
+import { useEffect, useState } from 'react';
+import { Outlet, useLocation, useNavigate } from 'react-router-dom';
+import TopBar from './components/TopBar';
+import Sidebar from './components/Sidebar';
+import { ThemeProvider } from './contexts/ThemeContext';
+import './App.css';
 
 function App() {
   const location = useLocation();
   const navigate = useNavigate();
   const [activePage, setActivePage] = useState("Home");
 
-  // Update active page based on current route
+  // Route change হলে active page detect করো
   useEffect(() => {
     const path = location.pathname;
     if (path === "/" || path === "/home") {
@@ -20,27 +19,31 @@ function App() {
       setActivePage("Leaderboard");
     } else if (path === "/reports") {
       setActivePage("Reports");
-    } else if (path === "/subscription") {
-      setActivePage("Subscription");
+    } else if (path.startsWith("/updatebook")) {
+      setActivePage("updatebook");
     }
   }, [location.pathname]);
 
-  const handlePageChange = (pageName) => {
+  // Page Change Handler
+  const handlePageChange = (pageName, id = null) => {
     setActivePage(pageName);
-    
-    // Navigate to the corresponding route
+
     switch (pageName) {
       case "Home":
         navigate("/");
         break;
-      case "adminstration":
-        navigate("/adminstration");
+      case "bookform":
+        navigate("/bookform");
         break;
-      case "Reports":
-        navigate("/reports");
+      case "booklist":
+        navigate("/booklist");
         break;
-      case "Subscription":
-        navigate("/subscription");
+      case "updatebook":
+        if (id) {
+          navigate(`/updatebook/${id}`);  
+        } else {
+          navigate("/updatebook");
+        }
         break;
       default:
         navigate("/");
@@ -54,12 +57,13 @@ function App() {
         <div className="flex">
           <Sidebar onPageChange={handlePageChange} activePage={activePage} />
           <main className="flex-1">
-            <Outlet />
+            <Outlet context={{ handlePageChange }} /> 
+        
           </main>
         </div>
       </div>
     </ThemeProvider>
-  )
+  );
 }
 
-export default App
+export default App;

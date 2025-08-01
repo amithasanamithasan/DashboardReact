@@ -1,18 +1,47 @@
 import React from "react";
 import { IoNotificationsOutline } from "react-icons/io5";
-import { GoPersonAdd } from "react-icons/go";
+
 import { useTheme } from "../contexts/ThemeContext";
 
 import img from "../assets/logo.png";
 import { Tally1 } from "lucide-react";
-import { NavLink } from "react-router-dom";
+import { NavLink, useNavigate } from "react-router-dom";
 import { IoMdLogIn } from "react-icons/io";
 import { FaRegRegistered } from "react-icons/fa";
+import axios from "axios";
+import Swal from "sweetalert2";
 
 const TopBar = () => {
   const { theme, toggleTheme } = useTheme();
 
+  const navigate = useNavigate();
+   const handleLogout = async () => {
+    try {
+      const token = localStorage.getItem('token');
 
+      await axios.post('http://127.0.0.1:8000/api/logout', null, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+          Accept: 'application/json',
+        },
+      });
+
+      localStorage.removeItem('token');
+
+      Swal.fire({
+        icon: 'success',
+        title: 'Logged out successfully',
+        timer: 1500,
+        showConfirmButton: false,
+      });
+
+
+      navigate('/login');
+    } catch (error) {
+      console.error('Logout error:', error.response?.data || error.message);
+      Swal.fire('Error', 'Failed to logout', 'error');
+    }
+  };
   const buttonClasses = `
     ${theme === 'light' ? 'bg-primary text-primary-content' : 'bg-white text-gray-900'}
     hover:bg-opacity-90 
@@ -21,7 +50,6 @@ const TopBar = () => {
     ${theme === 'light' ? 'border-primary' : 'border-gray-200'}
   `;
 
-  // Determine icon color based on theme
   const iconColorClass = theme === 'light' ? 'text-primary-content' : 'text-gray-800';
 
 
@@ -47,10 +75,13 @@ const TopBar = () => {
         />
         <Tally1 size={30} strokeWidth={0.5} />
      
-        <button className={buttonClasses}>
+        {/* <button className={buttonClasses}>
           <GoPersonAdd className={`w-4 h-4 ${iconColorClass}`} />
-          Invite Friends
-        </button>
+        
+        </button> */}
+         <button onClick={handleLogout} className="btn btn-error btn-sm ml-4">
+        Logout
+      </button>
       </div>
     </div>
   );

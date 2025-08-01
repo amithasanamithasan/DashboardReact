@@ -1,13 +1,13 @@
 import { createBrowserRouter } from "react-router-dom";
 import App from "../App";
 import Home from "../components/Home";
-
-import Reports from "../components/Reports";
-import Subscription from "../components/Subscription";
 import Login from "../page/Login";
 import Register from "../page/Ragister";
-import Adminstration from "../components/Adminstration";
+import PrivateRoute from "../routes/PrivateRoute";
+import BookList from "../components/BookList";
 
+import BookForm from "../components/BookForm";
+import UpdateBook from "../components/UpdateBook";
 
 
 export const router = createBrowserRouter([
@@ -17,23 +17,23 @@ export const router = createBrowserRouter([
     children: [
       {
         index: true,
-        element: <Home />,
+        element: <Home/>,
       },
       {
         path: "home",
-        element: <Home />,
+        element: <PrivateRoute><Home/></PrivateRoute>,
       },
       {
-        path: "adminstration",
-        element:<Adminstration/>,
+        path: "bookform",
+        element:<BookForm/>,
       },
       {
-        path: "reports",
-        element: <Reports />,
+        path: "booklist",
+        element: <BookList/>,
       },
-      {
-        path: "subscription",
-        element: <Subscription />,
+     {
+        path: "updatebook/:id", 
+        element: <UpdateBook/>
       },
     ],
   },

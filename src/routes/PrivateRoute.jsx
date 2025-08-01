@@ -1,14 +1,18 @@
 import { Navigate, useLocation } from "react-router-dom";
 
-const PrivateRoute = ({children}) => {
+const PrivateRoute = ({ children }) => {
+  const location = useLocation();
 
-    const location =useLocation();
-    // condition using
-    // user thakle amra children e patia dibo 
-    // r user jodi na thake tahole login e patea dibo 
-  
-    return <Navigate to="/login" state={{from:location}}replace></Navigate>
-        
+
+  const isAuthenticated = !!localStorage.getItem("token");
+
+  if (!isAuthenticated) {
+
+    return <Navigate to="/login" state={{ from: location }} replace />;
+  }
+
+
+  return children;
 };
 
 export default PrivateRoute;
