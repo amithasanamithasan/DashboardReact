@@ -18,7 +18,7 @@ const Register = () => {
     const fullname = form.fullname.value;
     const email = form.email.value;
     const password = form.password.value;
-    const password_confirmation = form.password_confirmation.value; 
+    const password_confirmation = form.password_confirmation.value;
 
     try {
       setLoading(true);
@@ -32,15 +32,12 @@ const Register = () => {
 
       console.log("Register Success:", response.data);
 
-      alert("✅ Registration Successful!");
-      localStorage.setItem("token", response.data.token); 
-      navigate("/"); // Redirect to home/dashboard
-
+      alert("  Registration Successful!");
+      localStorage.setItem("token", response.data.token);
+      navigate("/");
     } catch (error) {
       console.error("Register Error:", error.response?.data || error.message);
-      alert(
-        error.response?.data?.message || "Registration failed. Try again!"
-      );
+      alert(error.response?.data?.message || "Registration failed. Try again!");
     } finally {
       setLoading(false);
     }
@@ -49,20 +46,19 @@ const Register = () => {
   return (
     <div className="min-h-screen bg-gradient-to-r from-cyan-100 to-purple-100 flex items-center justify-center p-6">
       <div className="flex lg:flex-row max-w-6xl bg-white rounded-xl shadow-lg overflow-hidden">
-        
-      
         <div className="lg:w-1/2 flex flex-col items-center justify-center p-10 bg-gradient-to-r from-cyan-200 to-purple-200">
           <h1 className="text-4xl md:text-5xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-cyan-500 to-purple-700 mb-6 text-center">
             Create Account
           </h1>
-          <Lottie animationData={signUp} loop={true} className="w-full max-w-md" />
+          <Lottie
+            animationData={signUp}
+            loop={true}
+            className="w-full max-w-md"
+          />
         </div>
-
 
         <div className="lg:w-1/2 p-10">
           <form onSubmit={handleRegister} className="space-y-6">
-
-     
             <div>
               <label className="block text-sm font-medium text-gray-700">
                 Full Name<span className="text-amber-700"> *</span>
@@ -76,7 +72,6 @@ const Register = () => {
               />
             </div>
 
-        
             <div>
               <label className="block text-sm font-medium text-gray-700">
                 Email<span className="text-amber-700"> *</span>
@@ -90,7 +85,6 @@ const Register = () => {
               />
             </div>
 
-   
             <div>
               <label className="block text-sm font-medium text-gray-700">
                 Password<span className="text-amber-700"> *</span>
@@ -107,7 +101,11 @@ const Register = () => {
                   className="absolute top-6 right-3 cursor-pointer text-gray-600"
                   onClick={() => setShowPassword(!showPassword)}
                 >
-                  {showPassword ? <FaEye className="text-xl" /> : <FaEyeSlash className="text-xl" />}
+                  {showPassword ? (
+                    <FaEye className="text-xl" />
+                  ) : (
+                    <FaEyeSlash className="text-xl" />
+                  )}
                 </span>
               </div>
             </div>
@@ -129,12 +127,15 @@ const Register = () => {
                   className="absolute top-6 right-3 cursor-pointer text-gray-600"
                   onClick={() => setShowConfirmPassword(!showConfirmPassword)}
                 >
-                  {showConfirmPassword ? <FaEye className="text-xl" /> : <FaEyeSlash className="text-xl" />}
+                  {showConfirmPassword ? (
+                    <FaEye className="text-xl" />
+                  ) : (
+                    <FaEyeSlash className="text-xl" />
+                  )}
                 </span>
               </div>
             </div>
 
-          
             <div>
               <button
                 type="submit"

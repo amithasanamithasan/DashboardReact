@@ -8,7 +8,7 @@ const BookList = () => {
   const [books, setBooks] = useState([]);
   const [loading, setLoading] = useState(true);
   const navigate = useNavigate();
- 
+
   const fetchBooks = async () => {
     try {
       const token = localStorage.getItem("token");
@@ -18,59 +18,60 @@ const BookList = () => {
           Accept: "application/json",
         },
       });
-      // Handle both { data: [...] } and [...] responses
+
       const booksData = Array.isArray(response.data)
         ? response.data
         : response.data.data || response.data.books || [];
       setBooks(booksData);
     } catch (error) {
-      console.error("Error fetching books:", error.response?.data || error.message);
+      console.error(
+        "Error fetching books:",
+        error.response?.data || error.message
+      );
     } finally {
       setLoading(false);
     }
   };
-const handleDelete = async (bookId) => {
- 
-  Swal.fire({
-    title: "Are you sure?",
-    text: "You won't be able to revert this!",
-    icon: "warning",
-    showCancelButton: true,
-    confirmButtonColor: "#3085d6",
-    cancelButtonColor: "#d33",
-    confirmButtonText: "Yes, delete it!"
-  }).then(async (result) => {
-    if (result.isConfirmed) {
-      try {
-        const token = localStorage.getItem("token");
-        await axios.delete(`http://127.0.0.1:8000/api/books/${bookId}`, {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        });
+  const handleDelete = async (bookId) => {
+    Swal.fire({
+      title: "Are you sure?",
+      text: "You won't be able to revert this!",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#3085d6",
+      cancelButtonColor: "#d33",
+      confirmButtonText: "Yes, delete it!",
+    }).then(async (result) => {
+      if (result.isConfirmed) {
+        try {
+          const token = localStorage.getItem("token");
+          await axios.delete(`http://127.0.0.1:8000/api/books/${bookId}`, {
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+          });
 
-      
-        Swal.fire({
-          title: "Deleted!",
-          text: "Book deleted successfully.",
-          icon: "success",
-          timer: 1500,
-          showConfirmButton: false,
-        });
-        setBooks((prevBooks) => prevBooks.filter((book) => book.id !== bookId));
-
-      } catch (error) {
-        console.error("Delete error:", error.response?.data || error.message);
-        Swal.fire("Error!", "Failed to delete book.", "error");
+          Swal.fire({
+            title: "Deleted!",
+            text: "Book deleted successfully.",
+            icon: "success",
+            timer: 1500,
+            showConfirmButton: false,
+          });
+          setBooks((prevBooks) =>
+            prevBooks.filter((book) => book.id !== bookId)
+          );
+        } catch (error) {
+          console.error("Delete error:", error.response?.data || error.message);
+          Swal.fire("Error!", "Failed to delete book.", "error");
+        }
       }
-    }
-  });
-};
+    });
+  };
 
   const handleEdit = (bookId) => {
     console.log("Edit book with ID:", bookId);
-    navigate(`/updatebook/${bookId}`); 
-    
+    navigate(`/updatebook/${bookId}`);
   };
 
   useEffect(() => {
@@ -86,13 +87,30 @@ const handleDelete = async (bookId) => {
       <table className="w-full text-sm text-left text-gray-500 dark:text-gray-400">
         <thead className="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
           <tr>
-            <th scope="col" className="px-6 py-3">Title</th>
-            <th scope="col" className="px-6 py-3">Author</th>
-            <th scope="col" className="px-6 py-3">Published Year</th>
-            <th scope="col" className="px-6 py-3">ISBN</th>
-            <th scope="col" className="px-6 py-3">Description</th>
-            <th scope="col" className="px-6 py-3">Price</th>
-            <th scope="col" className="px-6 py-3 text-center">Action</th>
+            <th scope="col" className="px-6 py-3">
+              Picture
+            </th>
+            <th scope="col" className="px-6 py-3">
+              Title
+            </th>
+            <th scope="col" className="px-6 py-3">
+              Author
+            </th>
+            <th scope="col" className="px-6 py-3">
+              Published Year
+            </th>
+            <th scope="col" className="px-6 py-3">
+              ISBN
+            </th>
+            <th scope="col" className="px-6 py-3">
+              Description
+            </th>
+            <th scope="col" className="px-6 py-3">
+              Price
+            </th>
+            <th scope="col" className="px-6 py-3 text-center">
+              Action
+            </th>
           </tr>
         </thead>
         <tbody>
@@ -108,7 +126,17 @@ const handleDelete = async (bookId) => {
                 key={book.id}
                 className="odd:bg-white odd:dark:bg-gray-900 even:bg-gray-50 even:dark:bg-gray-800 border-b dark:border-gray-700"
               >
-                <td className="px-6 py-4 font-medium text-gray-900 dark:text-white">{book.title}</td>
+                <td className="px-6 py-4 font-medium text-gray-900 dark:text-white">
+                  <img
+                    // src={book.picture}
+                    src={book.picture || "https://via.placeholder.com/150"}
+                    alt={book.title}
+                    className="w-30 h-20 object-cover rounded-full"
+                  />
+                </td>
+                <td className="px-6 py-4 font-medium text-gray-900 dark:text-white">
+                  {book.title}
+                </td>
                 <td className="px-6 py-4">{book.author}</td>
                 <td className="px-6 py-4">{book.published_year}</td>
                 <td className="px-6 py-4">{book.isbn}</td>
@@ -122,12 +150,12 @@ const handleDelete = async (bookId) => {
                   >
                     <FiEdit className="w-5 h-5" />
                   </button> */}
-                    <button
-                className="bg-blue-500 text-white px-3 py-1 rounded"
-                onClick={() => handleEdit(book.id)}
-              >
-                Edit
-              </button>
+                  <button
+                    className="bg-blue-500 text-white px-3 py-1 rounded"
+                    onClick={() => handleEdit(book.id)}
+                  >
+                    Edit
+                  </button>
                   {/* <button onClick={() => handlePageChange("updatebook", book.id)}>
   Edit
 </button> */}

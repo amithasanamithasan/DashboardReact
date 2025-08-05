@@ -6,21 +6,27 @@ import { FaEye, FaEyeSlash } from "react-icons/fa6";
 import { TbFidgetSpinner } from "react-icons/tb";
 import SocialLogin from "../components/SocialLogin";
 import axios from "axios";
-import { ToastContainer, toast } from 'react-toastify';
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+
 const Login = () => {
   const [showPassword, setShowPassword] = useState(false);
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
-    const notify = () => toast("✅ Login Successful!");
+
   const handleLogin = async (event) => {
     event.preventDefault();
     const form = event.target;
-    const email = form.email.value;
-    const password = form.password.value;
+    const email = form.email.value.trim();
+    const password = form.password.value.trim();
+
+    if (!email || !password) {
+      toast.error("⚠️ Please fill in all fields!");
+      return;
+    }
 
     try {
       setLoading(true);
-
       const response = await axios.post("http://127.0.0.1:8000/api/login", {
         email,
         password,
@@ -30,12 +36,14 @@ const Login = () => {
 
       localStorage.setItem("token", response.data.token);
 
+      toast.success("✅ Login Successful!");
 
-      navigate("/");
+      form.reset();
 
+      setTimeout(() => navigate("/"), 1000);
     } catch (error) {
       console.error("Login Error:", error.response?.data || error.message);
-      alert(error.response?.data?.message || "Invalid credentials!");
+      toast.error(error.response?.data?.message || "❌ Invalid credentials!");
     } finally {
       setLoading(false);
     }
@@ -47,9 +55,13 @@ const Login = () => {
         {/* Left Animation */}
         <div className="lg:w-1/2 flex flex-col items-center justify-center p-10 bg-gradient-to-r from-cyan-200 to-purple-200">
           <h1 className="text-4xl md:text-5xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-cyan-500 to-purple-700 mb-6 text-center">
-           REACT BOOK
+            REACT BOOK
           </h1>
-          <Lottie animationData={signIn} loop={true} className="w-full max-w-md" />
+          <Lottie
+            animationData={signIn}
+            loop={true}
+            className="w-full max-w-md"
+          />
         </div>
 
         {/* Right Form */}
@@ -57,7 +69,9 @@ const Login = () => {
           <form onSubmit={handleLogin} className="space-y-6">
             {/* Email */}
             <div>
-              <label className="block text-sm font-medium text-gray-700">Email</label>
+              <label className="block text-sm font-medium text-gray-700">
+                Email
+              </label>
               <input
                 type="email"
                 name="email"
@@ -69,7 +83,9 @@ const Login = () => {
 
             {/* Password */}
             <div>
-              <label className="block text-sm font-medium text-gray-700">Password</label>
+              <label className="block text-sm font-medium text-gray-700">
+                Password
+              </label>
               <div className="relative">
                 <input
                   type={showPassword ? "text" : "password"}
@@ -82,7 +98,11 @@ const Login = () => {
                   className="absolute top-6 right-3 cursor-pointer text-gray-600"
                   onClick={() => setShowPassword(!showPassword)}
                 >
-                  {showPassword ? <FaEye className="text-xl" /> : <FaEyeSlash className="text-xl" />}
+                  {showPassword ? (
+                    <FaEye className="text-xl" />
+                  ) : (
+                    <FaEyeSlash className="text-xl" />
+                  )}
                 </span>
               </div>
             </div>
@@ -90,16 +110,19 @@ const Login = () => {
             {/* Submit */}
             <div>
               <button
-                onClick={notify}
                 type="submit"
                 disabled={loading}
-                className={`w-full sm:w-[150px] bg-gradient-to-r from-teal-500 to-violet-300 text-white py-3 rounded-full text-lg font-semibold transition duration-300 hover:opacity-90 ${
+                className={`w-full sm:w-[480px] bg-gradient-to-r from-teal-500 to-violet-300 text-white py-3 rounded-full text-lg font-semibold transition duration-300 hover:opacity-90 ${
                   loading && "opacity-70 cursor-not-allowed"
                 }`}
               >
-                {loading ? <TbFidgetSpinner className="animate-spin mx-auto text-2xl" /> : "Log In"}
+                {loading ? (
+                  <TbFidgetSpinner className="animate-spin mx-auto text-2xl" />
+                ) : (
+                  "Log In"
+                )}
               </button>
-                  <ToastContainer />
+              <ToastContainer />
             </div>
           </form>
 
@@ -114,7 +137,10 @@ const Login = () => {
 
           <p className="text-center text-sm text-gray-400 py-3">
             Don't have an account?{" "}
-            <Link to="/register" className="text-cyan-500 font-semibold underline">
+            <Link
+              to="/register"
+              className="text-cyan-500 font-semibold underline"
+            >
               Sign up
             </Link>
           </p>

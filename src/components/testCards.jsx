@@ -1,18 +1,9 @@
-import { useTheme } from "../contexts/ThemeContext";
+import React from 'react'
 
-
-const TestCards = () => {
-  const { theme } = useTheme();
-
+const testCards = () => {
   return (
-    <div>
+    <div>testCards</div>
+  )
+}
 
-
-    
-      </div>
-      
-    
-  );
-};
-
-export default TestCards;
+export default testCards
